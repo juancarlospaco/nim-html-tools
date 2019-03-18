@@ -7,8 +7,8 @@
 
 - [HTML Image Lazy Load.](https://codepen.io/FilipVitas/pen/pQBYQd)
 - [HTML Input Email, that validates **before** Submit, uses IANA for validation.](https://coliff.github.io/html5-email-regex)
+- [HTML Notification bubble, super easy to use.](https://user-images.githubusercontent.com/1189414/54497190-708cfd00-48d6-11e9-9812-7ac7542c294e.png)
 - HTML Input File, validates File Format **before** Upload, by default for Images but you can customize it.
-- HTML Notification bubble, super easy to use.
 - HTML Minifier, super fast performance.
 - RST/Markdown to HTML using Nim std lib.
 - HTML Input Number, wont allow Negative, maxlenght is enforced, dir auto, etc.
