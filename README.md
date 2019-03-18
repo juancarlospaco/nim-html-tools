@@ -32,6 +32,7 @@ echo "<button onClick='" & notifyHtml("This is a Notification") & "'>Notificatio
 echo rst2html("**Hello** *World*")
 echo minifyHtml("     <p>some</p>                                                  <b>HTML</b>     ") # Minifies when -d:release
 ```
+(Not all parameters are required, on the example all parameters are used only for illustrative purposes)
 
 
 # Install
