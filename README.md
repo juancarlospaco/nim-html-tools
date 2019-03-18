@@ -1,6 +1,6 @@
 # Nim-HTML-Tools
 
-- HTML5 Tools for Nim, all Templates, No CSS, No Libs, No JS Framework.
+- HTML5 Tools for Nim, all Templates, No CSS, No Libs, No JS Framework, No CSS Framework.
 
 
 # Features
