@@ -19,7 +19,7 @@
 ![HTML Input File Format Validation](fileformat-validate.png)
 
 
-![HTML Input Mail Validation](email-valiadtion.png)
+![HTML Input Mail Validation](email-validation.png)
 
 
 # Use
