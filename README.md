@@ -19,6 +19,9 @@
 ![HTML Input File Format Validation](fileformat-validate.png)
 
 
+![HTML Input Mail Validation](email-valiadtion.png)
+
+
 # Use
 
 ```nim
