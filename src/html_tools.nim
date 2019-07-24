@@ -9,17 +9,6 @@ from packages/docutils/rstgen import rstToHtml
 from packages/docutils/rst import RstParseOption
 
 
-when defined(recaptcha):
-  var
-    useCaptcha*: bool
-    captcha*: ReCaptcha
-
-  let
-    dict = loadConfig(replace(getAppDir(), "/nimwcpkg", "") & "/config/config.cfg")
-    recaptchaSecretKey = dict.getSectionValue("reCAPTCHA", "Secretkey")
-    recaptchaSiteKey* = dict.getSectionValue("reCAPTCHA", "Sitekey")
-
-
 # curl -s http://data.iana.org/TLD/tlds-alpha-by-domain.txt | sed '1d; s/^ *//; s/ *$//; /^$/d' | awk '{print length" "$0}' | sort -rn | cut -d' ' -f2- | tr '\n' '|' | tr '[:upper:]' '[:lower:]' | sed 's/\(.*\)./\1/'
 const inputMail = (
   r"""<input type="email" value="$1" name="$2" class="$3" id="$4" placeholder="$5" title="$5" $6 """ &
@@ -118,6 +107,15 @@ template statusIntToCheckbox*(status, value: string): string =
 
 
 when defined(recaptcha):
+  var
+    useCaptcha*: bool
+    captcha*: ReCaptcha
+
+  let
+    dict = loadConfig(replace(getAppDir(), "/nimwcpkg", "") & "/config/config.cfg")
+    recaptchaSecretKey = dict.getSectionValue("reCAPTCHA", "Secretkey")
+    recaptchaSiteKey* = dict.getSectionValue("reCAPTCHA", "Sitekey")
+
   proc setupReCapthca*(recaptchaSiteKey = recaptchaSiteKey, recaptchaSecretKey = recaptchaSecretKey) =
     ## Activate Google reCAPTCHA
     preconditions recaptchaSiteKey.len > 0, recaptchaSecretKey.len > 0
