@@ -1,7 +1,23 @@
-import strutils
+import strutils, os
+
+when defined(recaptcha):
+  import recaptcha, parsecfg, asyncdispatch, contra
+  export recaptcha
+
 from strtabs import newStringTable, modeStyleInsensitive
 from packages/docutils/rstgen import rstToHtml
 from packages/docutils/rst import RstParseOption
+
+
+when defined(recaptcha):
+  var
+    useCaptcha*: bool
+    captcha*: ReCaptcha
+
+  let
+    dict = loadConfig(replace(getAppDir(), "/nimwcpkg", "") & "/config/config.cfg")
+    recaptchaSecretKey = dict.getSectionValue("reCAPTCHA", "Secretkey")
+    recaptchaSiteKey* = dict.getSectionValue("reCAPTCHA", "Sitekey")
 
 
 # curl -s http://data.iana.org/TLD/tlds-alpha-by-domain.txt | sed '1d; s/^ *//; s/ *$//; /^$/d' | awk '{print length" "$0}' | sort -rn | cut -d' ' -f2- | tr '\n' '|' | tr '[:upper:]' '[:lower:]' | sed 's/\(.*\)./\1/'
@@ -99,6 +115,38 @@ template statusIntToCheckbox*(status, value: string): string =
     "selected"
   else:
     ""
+
+
+when defined(recaptcha):
+  proc setupReCapthca*(recaptchaSiteKey = recaptchaSiteKey, recaptchaSecretKey = recaptchaSecretKey) =
+    ## Activate Google reCAPTCHA
+    preconditions recaptchaSiteKey.len > 0, recaptchaSecretKey.len > 0
+    if len(recaptchaSecretKey) > 0 and len(recaptchaSiteKey) > 0:
+      useCaptcha = true
+      captcha = initReCaptcha(recaptchaSecretKey, recaptchaSiteKey)
+      echo("Initialized ReCAPTCHA.")
+    else:
+      useCaptcha = false
+      echo("Failed to initialize ReCAPTCHA.")
+
+
+  proc checkReCaptcha*(antibot, userIP: string): Future[bool] {.async.} =
+    ## Check if Google reCAPTCHA is Valid
+    preconditions antibot.len > 0, userIP.len > 0
+    if useCaptcha:
+      var captchaValid = false
+      try:
+        captchaValid = await captcha.verify(antibot, userIP)
+      except:
+        echo("Error checking captcha: " & getCurrentExceptionMsg())
+        captchaValid = false
+      if not captchaValid:
+        echo("g-recaptcha-response", "Answer to captcha incorrect!")
+        return false
+      else:
+        return true
+    else:
+      return true
 
 
 runnableExamples:
